@@ -1,6 +1,5 @@
 ﻿using BindyBot.API.Data;
 using BindyBot.API.Modules.Authentication;
-using BindyBot.API.Modules.JwtAuth.Models;
 using BindyBot.API.Modules.Swagger;
 using BindyBot.API.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +24,7 @@ builder.Services.AddDbContext<BindyBotApiDbContext>(options =>
 var issuer = builder.Configuration["JWT_ISSUER"];
 var audience = builder.Configuration["JWT_AUDIENCE"];
 var key = builder.Configuration["JWT_ACCESS_TOKEN_SECRET"];
-builder.Services.AddJwtAuthModule<UserRepository>(issuer, audience, key);
+builder.Services.AddJwtAuthModule<UserRepository, RevokedTokenRepository>(issuer, audience, key);
 #endregion
 
 #region App
@@ -36,16 +35,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerModule();
 
-    // DB test
     using var scope = app.Services.CreateScope();
     var apiContext = scope.ServiceProvider.GetRequiredService<BindyBotApiDbContext>();
     apiContext.Database.EnsureDeleted();
     apiContext.Database.EnsureCreated();
-    if (!apiContext.Users.Any())
-    {
-        apiContext.Add(new User("admin", "x61Ey612Kl2gpFL56FT9weDnpSo4AV8j8+qx2AuTHdRyY036xxzTTrw10Wq3+4qQyB+XURPWx1ONxp3Y3pB37A==", UserRole.Admin));
-        apiContext.SaveChanges();
-    }
 }
 
 app.UseHttpsRedirection();

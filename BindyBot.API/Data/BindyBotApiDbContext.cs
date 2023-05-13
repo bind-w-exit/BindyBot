@@ -11,4 +11,5 @@ public class BindyBotApiDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<RevokedToken> RevokedTokens { get; set; }
 }

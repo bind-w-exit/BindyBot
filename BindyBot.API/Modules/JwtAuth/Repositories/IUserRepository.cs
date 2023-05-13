@@ -1,11 +1,10 @@
-﻿using BindyBot.API.Modules.JwtAuth.Dtos;
-using BindyBot.API.Modules.JwtAuth.Models;
+﻿using BindyBot.API.Modules.JwtAuth.Models;
 
 namespace BindyBot.API.Modules.JwtAuth.Repositories;
 
 public interface IUserRepository
 {
-    User? Create(UserForRegisterDto user);
+    User? Create(User user);
 
     List<User>? GetAll();
 
@@ -15,5 +14,5 @@ public interface IUserRepository
 
     bool Delete(int id);
 
-    User? GetByLoginAndPass(string username, string passwordHash);
+    User? GetByLogin(string username);
 }

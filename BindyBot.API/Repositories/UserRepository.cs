@@ -1,10 +1,7 @@
 ﻿using BindyBot.API.Data;
-using BindyBot.API.Modules.JwtAuth.Dtos;
 using BindyBot.API.Modules.JwtAuth.Models;
 using BindyBot.API.Modules.JwtAuth.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace BindyBot.API.Repositories;
 
@@ -17,19 +14,18 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public User? Create(UserForRegisterDto user)
+    public User? Create(User user)
     {
-        var newUser = new User(user.Username, HashPassword(user.Password), UserRole.Admin);
-        _dbContext.Users.Add(newUser);
+        _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
 
-        return newUser;
+        return user;
     }
 
     public bool Delete(int id)
     {
         var affected = _dbContext.Users
-            .Where(model => model.Id == id)
+            .Where(user => user.Id == id)
             .ExecuteDelete();
 
         return affected == 1;
@@ -42,24 +38,18 @@ public class UserRepository : IUserRepository
 
     public User? GetById(int id)
     {
-        return _dbContext.Users.AsNoTracking()
-            .FirstOrDefault(model => model.Id == id);
+        return _dbContext.Users
+            .FirstOrDefault(user => user.Id == id);
     }
 
-    public User? GetByLoginAndPass(string username, string password)
+    public User? GetByLogin(string username)
     {
-        return _dbContext.Users.AsNoTracking()
-            .FirstOrDefault(model => model.Username == username && model.PasswordHash == HashPassword(password));
+        return _dbContext.Users
+            .FirstOrDefault(user => user.Username == username);
     }
 
     public User Update(User user)
     {
         throw new NotImplementedException();
-    }
-
-    private static string HashPassword(string password)
-    {
-        byte[] hashedBytes = SHA512.HashData(Encoding.UTF8.GetBytes(password));
-        return Convert.ToBase64String(hashedBytes);
     }
 }
