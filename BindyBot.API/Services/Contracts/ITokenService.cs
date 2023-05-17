@@ -1,6 +1,6 @@
-﻿using BindyBot.API.Modules.JwtAuth.Models;
+﻿using BindyBot.Api.Models;
 
-namespace BindyBot.API.Modules.JwtAuth.Services;
+namespace BindyBot.Api.Services.Contracts;
 
 public interface ITokenService
 {

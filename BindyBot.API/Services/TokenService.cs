@@ -1,10 +1,11 @@
-﻿using BindyBot.API.Modules.JwtAuth.Models;
+﻿using BindyBot.Api.Models;
+using BindyBot.Api.Services.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace BindyBot.API.Modules.JwtAuth.Services;
+namespace BindyBot.Api.Services;
 
 public class TokenService : ITokenService
 {
@@ -14,9 +15,19 @@ public class TokenService : ITokenService
 
     public TokenService(IConfiguration configuration)
     {
-        _issuer = configuration["JWT_ISSUER"]!;
-        _audience = configuration["JWT_AUDIENCE"]!;
-        _key = configuration["JWT_ACCESS_TOKEN_SECRET"]!;
+        _issuer = ValidateConfigurationProp(configuration["JWT_ISSUER"], "JWT_ISSUER");
+        _audience = ValidateConfigurationProp(configuration["JWT_AUDIENCE"], "JWT_AUDIENCE");
+        _key = ValidateConfigurationProp(configuration["JWT_ACCESS_TOKEN_SECRET"], "JWT_ACCESS_TOKEN_SECRET");
+    }
+
+    private static string ValidateConfigurationProp(string? value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            throw new ArgumentException($"Value for parameter '{parameterName}' in the configuration file is null or whitespace.");
+        }
+
+        return value;
     }
 
     public AuthenticatedResponse GenerateAuthenticatedResponse(User user)
@@ -52,7 +63,6 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.UserRole.ToString()),
             new Claim(JwtRegisteredClaimNames.Jti, jti.ToString())
-            ,
         };
     }
 

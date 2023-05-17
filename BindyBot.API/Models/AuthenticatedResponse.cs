@@ -1,4 +1,4 @@
-﻿namespace BindyBot.API.Modules.JwtAuth.Models;
+﻿namespace BindyBot.Api.Models;
 
 public class AuthenticatedResponse
 {

@@ -1,4 +1,6 @@
-﻿namespace BindyBot.API.Modules.JwtAuth.Models;
+﻿using BindyBot.Api.Enums;
+
+namespace BindyBot.Api.Models;
 
 public class User
 {
@@ -6,9 +8,9 @@ public class User
     public string Username { get; set; }
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
-    public UserRole UserRole { get; set; }
+    public Roles UserRole { get; set; }
 
-    public User(string username, byte[] passwordHash, byte[] passwordSalt, UserRole userRole)
+    public User(string username, byte[] passwordHash, byte[] passwordSalt, Roles userRole)
     {
         Username = username;
         PasswordHash = passwordHash;

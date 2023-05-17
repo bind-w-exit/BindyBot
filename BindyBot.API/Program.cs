@@ -1,39 +1,111 @@
-﻿using BindyBot.API.Data;
-using BindyBot.API.Modules.Authentication;
-using BindyBot.API.Modules.Swagger;
-using BindyBot.API.Repositories;
+using BindyBot.Api.Data;
+using BindyBot.Api.Data.Contracts;
+using BindyBot.Api.Enums;
+using BindyBot.Api.Services;
+using BindyBot.Api.Services.Contracts;
+using BindyBot.TwitchApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
-#region Builder
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables();
-
 // Add services to the container.
-builder.Services.AddCors();
-builder.Services.AddSwaggerModule(true);
+builder.Services.AddSingleton<IHashService, HashService>();
+builder.Services.AddSingleton<TwitchAuthService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRevokedTokenRepository, RevokedTokenRepository>();
+builder.Services.AddScoped<ITwitchUserCredentialsRepository, TwitchUserCredentialsRepository>();
+builder.Services.AddHttpClient();
+builder.Services.AddControllers();
 
-var host = builder.Configuration["DB_HOST"];
-var database = builder.Configuration["DB_NAME"];
-var username = builder.Configuration["DB_USER"];
-var password = builder.Configuration["DB_PASS"];
-var connectionString = $"Host={host};Database={database};Username={username};Password={password}";
+// Database
+var connectionString = GetConnectionString(builder.Configuration);
 builder.Services.AddDbContext<BindyBotApiDbContext>(options =>
-        options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString));
 
-var issuer = builder.Configuration["JWT_ISSUER"];
-var audience = builder.Configuration["JWT_AUDIENCE"];
-var key = builder.Configuration["JWT_ACCESS_TOKEN_SECRET"];
-builder.Services.AddJwtAuthModule<UserRepository, RevokedTokenRepository>(issuer, audience, key);
-#endregion
+// Authentication
+var issuer = builder.Configuration["JWT_ISSUER"]!;
+var audience = builder.Configuration["JWT_AUDIENCE"]!;
+var key = builder.Configuration["JWT_ACCESS_TOKEN_SECRET"]!;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+        };
+    });
 
-#region App
+// Authorization
+AddAuthorizationPolicies(builder.Services);
+
+// Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Bindy Bot API",
+        Version = "v1",
+        Contact = new OpenApiContact
+        {
+            Name = "GitHub",
+            Url = new Uri("https://github.com/bind-w-exit/BindyBot")
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "MIT",
+            Url = new Uri("https://opensource.org/licenses/MIT")
+        }
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JSON Web Token based security"
+    });
+
+    c.AddSecurityRequirement(
+        new OpenApiSecurityRequirement()
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        }
+    );
+
+    //c.OperationFilter<SecurityRequirementsOperationFilter>();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwaggerModule();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     using var scope = app.Services.CreateScope();
     var apiContext = scope.ServiceProvider.GetRequiredService<BindyBotApiDbContext>();
@@ -49,21 +121,37 @@ app.UseCors(builder => builder
     .AllowAnyMethod()
     .AllowAnyHeader());
 
-app.UseJwtAuthModule();
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapGet("/api/test", () =>
-{
-    return "Hello, I'm Binty!";
-})
-.WithName("HelloWorld")
-.WithOpenApi();
-
-app.MapPost("/api/test", (string name) =>
-{
-    return $"Hello, I'm {name}!";
-})
-.WithName("HelloWorldWithCustomName")
-.WithOpenApi();
+app.MapControllers();
 
 app.Run();
-#endregion
+
+static string GetConnectionString(IConfiguration configuration)
+{
+    var host = configuration["DB_HOST"];
+    var database = configuration["DB_NAME"];
+    var username = configuration["DB_USER"];
+    var password = configuration["DB_PASS"];
+    return $"Host={host};Database={database};Username={username};Password={password}";
+}
+
+static void AddAuthorizationPolicies(IServiceCollection services)
+{
+    var roles = Enum.GetValues(typeof(Roles)).Cast<Roles>();
+    foreach (var role in roles)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(role.ToString(), policy =>
+                policy.RequireRole(role.ToString()));
+        });
+    }
+
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("RefreshToken", policy =>
+                policy.RequireRole("RefreshToken"));
+    });
+}

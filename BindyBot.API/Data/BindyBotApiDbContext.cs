@@ -1,7 +1,7 @@
-﻿using BindyBot.API.Modules.JwtAuth.Models;
+﻿using BindyBot.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BindyBot.API.Data;
+namespace BindyBot.Api.Data;
 
 public class BindyBotApiDbContext : DbContext
 {
@@ -12,4 +12,5 @@ public class BindyBotApiDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<RevokedToken> RevokedTokens { get; set; }
+    public DbSet<TwitchUserCredentials> TwitchUsersCredentials { get; set; }
 }
