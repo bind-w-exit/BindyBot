@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\TwitchApi\BindyBot.TwitchApi.csproj" />
+    <ProjectReference Include="..\BindyBot.TwitchApi\BindyBot.TwitchApi.csproj" />
   </ItemGroup>
 
 </Project>

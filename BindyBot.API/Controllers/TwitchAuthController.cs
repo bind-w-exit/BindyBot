@@ -1,5 +1,6 @@
 ﻿using BindyBot.Api.Data.Contracts;
 using BindyBot.Api.Models;
+using BindyBot.TwitchApi.Enums;
 using BindyBot.TwitchApi.Models;
 using BindyBot.TwitchApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +37,14 @@ public class TwitchAuthController : ControllerBase
             var clientId = _configuration["TWITCH_CLIENT_ID"]!;
             var redirectUri = @"http://localhost:3000/callback";
 
-            _authorizationCodeUrl = TwitchAuthService.GetAuthorizationCodeUrl(clientId, redirectUri, null);
+            List<AuthScopes> scopes = new()
+            {
+                AuthScopes.ChatRead,
+                AuthScopes.ChatEdit,
+                AuthScopes.ChannelModerate
+            };
+
+            _authorizationCodeUrl = TwitchAuthService.GetAuthorizationCodeUrl(clientId, redirectUri, scopes);
         }
 
         return Ok(_authorizationCodeUrl);

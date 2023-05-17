@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BindyBot.Api", "BindyBot.AP
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D93BA383-DA72-4F62-993B-21386C276F10}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BindyBot.TwitchApi", "..\TwitchApi\BindyBot.TwitchApi.csproj", "{54A818D7-E63D-410D-A944-EBE6CA850549}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BindyBot.TwitchApi", "BindyBot.TwitchApi\BindyBot.TwitchApi.csproj", "{E42B613B-D49B-4996-B8B2-1921AD9DAFAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{D93BA383-DA72-4F62-993B-21386C276F10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93BA383-DA72-4F62-993B-21386C276F10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93BA383-DA72-4F62-993B-21386C276F10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54A818D7-E63D-410D-A944-EBE6CA850549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54A818D7-E63D-410D-A944-EBE6CA850549}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54A818D7-E63D-410D-A944-EBE6CA850549}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54A818D7-E63D-410D-A944-EBE6CA850549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E42B613B-D49B-4996-B8B2-1921AD9DAFAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E42B613B-D49B-4996-B8B2-1921AD9DAFAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E42B613B-D49B-4996-B8B2-1921AD9DAFAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E42B613B-D49B-4996-B8B2-1921AD9DAFAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
