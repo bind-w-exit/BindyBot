@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using BindyBot.TwitchApi.Helpers;
+using System.ComponentModel;
 
 namespace BindyBot.TwitchApi.Models.Irc.Tags;
 
@@ -9,17 +10,21 @@ public class NoticeTags : IIrcTags
     /// <summary>
     /// An ID that you can use to programmatically determine the action’s outcome. For a list of possible IDs, see NOTICE Message IDs.
     /// </summary>
+    [IrcTag("msg-id")]
     public NoticeMsgId MsgId { get; set; }
 
     /// <summary>
     /// The ID of the user that the action targeted.
     /// </summary>
+    [IrcTag("target-user-id")]
     public long TargetUserId { get; set; }
 }
 
 // https://dev.twitch.tv/docs/irc/msg-id/
 public enum NoticeMsgId
 {
+    // TODO: Not full enum
+
     [Description("bad_ban_self")]
     BadBanSelf,
 

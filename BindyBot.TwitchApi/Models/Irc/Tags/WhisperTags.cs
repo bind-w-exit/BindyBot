@@ -3,17 +3,10 @@ using System.Drawing;
 
 namespace BindyBot.TwitchApi.Models.Irc.Tags;
 
-// https://dev.twitch.tv/docs/irc/tags/#globaluserstate-tags
-// Prototype: @badge-info=<badge-info>;badges=<badges>;color=<color>;display-name=<display-name>;emote-sets=<emote-sets>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
-public class GlobalUserStateTags : IIrcTags
+// https://dev.twitch.tv/docs/irc/tags/#whisper-tags
+// Prototype: @badges=<badges>;color=<color>;display-name=<display-name>;emotes=<emotes>;message-id=<msg-id>;thread-id=<thread-id>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
+public class WhisperTags : IIrcTags
 {
-    /// <summary>
-    /// Contains metadata related to the chat badges in the badges tag.
-    /// Currently, this tag contains metadata only for subscriber badges, to indicate the number of months the user has been a subscriber.
-    /// </summary>
-    [IrcTag("badge-info")]
-    public BadgeInfo BadgeInfo { get; set; }
-
     /// <summary>
     /// Comma-separated list of chat badges in the form, badge/version. For example, admin/1.
     /// </summary>
@@ -33,11 +26,26 @@ public class GlobalUserStateTags : IIrcTags
     public string? DisplayName { get; set; }
 
     /// <summary>
-    /// A comma-delimited list of IDs that identify the emote sets that the user has access to.
-    /// Is always set to at least zero (0). To access the emotes in the set, use the Get Emote Sets API.
+    /// A comma-delimited list of emotes and their positions in the message.
+    /// Each emote is in the form, emote ID:start position-end position.
+    /// The position indices are zero-based.
+    /// 
+    /// NOTE It’s possible for the emotes flag’s value to be set to an action instead of identifying an emote. For example, \001ACTION barfs on the floor.\001.
     /// </summary>
-    [IrcTag("emote-sets")]
-    public int[] EmoteSets { get; set; }
+    [IrcTag("emotes")]
+    public Emote[]? Emotes { get; set; }
+
+    /// <summary>
+    /// An ID that uniquely identifies the whisper message.
+    /// </summary>
+    [IrcTag("message-id")]
+    public long MessageId { get; set; }
+
+    /// <summary>
+    /// An ID that uniquely identifies the whisper thread. The ID is in the form, smaller-value-user-id_larger-value-user-id.
+    /// </summary>
+    [IrcTag("thread-id")]
+    public int ThreadId { get; set; }
 
     /// <summary>
     /// A Boolean value that indicates whether the user has site-wide commercial free mode enabled.

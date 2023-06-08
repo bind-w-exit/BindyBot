@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace BindyBot.TwitchApi.Models.Irc.Tags;
 
-// https://dev.twitch.tv/docs/irc/tags/#globaluserstate-tags
-// Prototype: @badge-info=<badge-info>;badges=<badges>;color=<color>;display-name=<display-name>;emote-sets=<emote-sets>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
-public class GlobalUserStateTags : IIrcTags
+// https://dev.twitch.tv/docs/irc/tags/#userstate-tags
+// Prototype: @badge-info=<badge-info>;badges=<badges>;color=<color>;display-name=<display-name>;emote-sets=<emote-sets>;id=<id>;mod=<mod>;subscriber=<subscriber>;turbo=<turbo>;user-type=<user-type>
+public class UserStateTags : IIrcTags
 {
     /// <summary>
     /// Contains metadata related to the chat badges in the badges tag.
@@ -40,13 +40,25 @@ public class GlobalUserStateTags : IIrcTags
     public int[] EmoteSets { get; set; }
 
     /// <summary>
+    /// An ID that uniquely identifies the message.
+    /// </summary>
+    [IrcTag("id")]
+    public int Id { get; set; }
+
+    /// <summary>
+    /// A Boolean value that determines whether the user is a moderator.
+    /// </summary>
+    [IrcTag("mod")]
+    public bool Mod { get; set; }
+
+    [IrcTag("subscriber")]
+    public bool Subscriber { get; set; }
+
+    /// <summary>
     /// A Boolean value that indicates whether the user has site-wide commercial free mode enabled.
     /// </summary>
     [IrcTag("turbo")]
     public bool Turbo { get; set; }
-
-    [IrcTag("user-id")]
-    public uint UserId { get; set; }
 
     [IrcTag("user-type")]
     public UserType UserType { get; set; }
