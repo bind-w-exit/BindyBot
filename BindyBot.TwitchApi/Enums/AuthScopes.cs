@@ -80,6 +80,7 @@ public static class AuthScopesConverter
             }
         }
     }
+
     /// <summary>
     /// Converts the specified <see cref="AuthScopes"/> value to its corresponding <see cref="string"/>  representation.
     /// </summary>

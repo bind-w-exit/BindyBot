@@ -12,7 +12,6 @@ public class TwitchAuthService
 
     public TwitchAuthService(HttpClient httpClient)
     {
-
         _httpClient = httpClient;
     }
 
