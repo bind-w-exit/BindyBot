@@ -6,7 +6,7 @@ public interface IIrcCommandParameters { }
 
 public record IrcJoinCommandParameters(IEnumerable<string> Channels) : IIrcCommandParameters;
 
-public record IrcNickIrcJoinCommandParameters(string Nickname) : IIrcCommandParameters;
+public record IrcNickCommandParameters(string Nickname) : IIrcCommandParameters;
 
 public record IrcNoticeCommandParameters(string Channel, string Message) : IIrcCommandParameters;
 
@@ -42,8 +42,24 @@ public record IrcWhisperCommandParameters(string FromUser, string Message) : IIr
 
 #region Supported numeric IRC messages
 
-public record IrcNameReplyCommandParameters(string Channel, IEnumerable<string> Users) : IIrcCommandParameters;
+public record IrcWelcomeCommandParameters(string WelcomeMessage) : IIrcCommandParameters;
 
-public record IrcEndOfNamesCommandParameters(string Channel, string Message) : IIrcCommandParameters;
+public record IrcYourHostCommandParameters(string YourHostMessage) : IIrcCommandParameters;
+
+public record IrcCreatedCommandParameters(string CreatedMessage) : IIrcCommandParameters;
+
+public record IrcMyInfoCommandParameters(string MyInfoMessage) : IIrcCommandParameters;
+
+public record IrcNamReplyCommandParameters(string Channel, IEnumerable<string> Users): IIrcCommandParameters;
+
+public record IrcEndOfNamesCommandParameters(string Channel, string EndOfNamesMessage) : IIrcCommandParameters;
+
+public record IrcMotdCommandParameters(string MessageOfTheDay) : IIrcCommandParameters;
+
+public record IrcMotdStartCommandParameters(string MessageOfTheDayStart) : IIrcCommandParameters;
+
+public record IrcEndOfMotdCommandParameters(string EndOfMessageOfTheDay) : IIrcCommandParameters;
+
+public record IrcUnknownCommandCommandParameters(string? User, string Command, string UnknownCommandMessage) : IIrcCommandParameters;
 
 #endregion Supported numeric IRC messages

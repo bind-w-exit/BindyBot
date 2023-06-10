@@ -1,13 +1,6 @@
 ﻿using BindyBot.TwitchApi.Helpers;
-using Newtonsoft.Json.Linq;
-using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
-using System.Numerics;
-using System.Threading.Channels;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BindyBot.TwitchApi.Models.Irc.Tags;
 
@@ -237,7 +230,7 @@ public class UserNoticeTags : IIrcTags
     [IrcTag("msg-param-gift-months")]
     public int? MsgParamGiftMonths { get; set; }
 
-    #endregion
+    #endregion Only subscription- and raid-related notices include the following tags:
 }
 
 public enum UserNoticeMsgId
@@ -281,12 +274,15 @@ public enum SubPlan
     // Amazon Prime subscription
     [Description("Prime")]
     Prime,
+
     // First level of paid subscription
     [Description("1000")]
     FirstLevel,
+
     // Second level of paid subscription
     [Description("2000")]
     SecondLevel,
+
     // Third level of paid subscription
     [Description("3000")]
     ThirdLevel

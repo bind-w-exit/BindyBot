@@ -29,7 +29,7 @@ public class WhisperTags : IIrcTags
     /// A comma-delimited list of emotes and their positions in the message.
     /// Each emote is in the form, emote ID:start position-end position.
     /// The position indices are zero-based.
-    /// 
+    ///
     /// NOTE It’s possible for the emotes flag’s value to be set to an action instead of identifying an emote. For example, \001ACTION barfs on the floor.\001.
     /// </summary>
     [IrcTag("emotes")]

@@ -86,7 +86,7 @@ public class PrivMsgTags : IIrcTags
     /// The text of the parent message. The message does not include this tag if this message is not a reply.
     /// </summary>
     [IrcTag("reply-parent-msg-body")]
-    public string? ReplyParentMsgBody { get; set;}
+    public string? ReplyParentMsgBody { get; set; }
 
     /// <summary>
     /// An ID that identifies the chat room (channel).

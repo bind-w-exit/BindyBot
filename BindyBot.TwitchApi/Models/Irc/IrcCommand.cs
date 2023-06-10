@@ -20,9 +20,16 @@ public enum IrcCommand
 /// </summary>
 public enum NumericIrcCommand
 {
+    RPL_WELCOME = 001,
+    RPL_YOURHOST = 002,
+    RPL_CREATED = 003,
+    RPL_MYINFO = 004,
     RPL_NAMREPLY = 353,
     RPL_ENDOFNAMES = 366,
-    ERR_UNKNOWNCOMMAND = 421,
+    RPL_MOTD = 372,
+    RPL_MOTDSTART = 375,
+    RPL_ENDOFMOTD = 376,
+    ERR_UNKNOWNCOMMAND = 421
 }
 
 /// <summary>
@@ -39,39 +46,4 @@ public enum TwitchIrcCommand
     USERNOTICE,
     USERSTATE,
     WHISPER
-}
-
-public class CombinedIrcCommand
-{
-    public ushort Value { get; private set; }
-    public bool IsIrcCommand { get; private set; }
-    public bool IsNumericIrcCommand { get; private set; }
-    public bool IsTwitchIrcCommand { get; private set; }
-
-    public CombinedIrcCommand(Enum command)
-    {
-        Value = Convert.ToUInt16(command);
-        SetCommandType(command);
-    }
-
-    private void SetCommandType(Enum command)
-    {
-        switch (command)
-        {
-            case IrcCommand:
-                IsIrcCommand = true;
-                break;
-
-            case NumericIrcCommand:
-                IsNumericIrcCommand = true;
-                break;
-
-            case TwitchIrcCommand:
-                IsTwitchIrcCommand = true;
-                break;
-
-            default:
-                throw new ArgumentException("Invalid command type");
-        }
-    }
 }

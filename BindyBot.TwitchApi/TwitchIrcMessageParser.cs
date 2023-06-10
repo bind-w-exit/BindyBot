@@ -1,11 +1,12 @@
 ﻿using BindyBot.TwitchApi.Models.Irc;
+using BindyBot.TwitchApi.Models.Irc.Contracts;
 using BindyBot.TwitchApi.Models.Irc.Tags;
 
 namespace BindyBot.TwitchApi;
 
 public class TwitchIrcMessageParser
 {
-    public static IrcMessage Parse(string message)
+    public static IIrcMessage Parse(string message)
     {
         if (string.IsNullOrWhiteSpace(message))
             throw new ArgumentNullException(nameof(message));
@@ -51,10 +52,9 @@ public class TwitchIrcMessageParser
         // Parse the components of the IRC message and assign them to properties
         IIrcTags? tags = rawTags.IsEmpty ? null : ParseTags(rawTags.ToString());
         IrcSource? prefix = rawPrefix.IsEmpty ? null : ParsePrefixSwitch(rawPrefix.ToString());
-        CombinedIrcCommand command = ParseCommand(rawCommand.ToString());
         IIrcCommandParameters? parameters = rawParameters.IsEmpty ? null : ParseParameters(rawParameters.ToString());
 
-        return new IrcMessage(tags, prefix, command, parameters);
+        throw new NotImplementedException();
     }
 
     public static IIrcTags ParseTags(string rawTags)
@@ -132,11 +132,6 @@ public class TwitchIrcMessageParser
             default: // servername
                 return new IrcSource(rawPrefix.Substring(1));
         }
-    }
-
-    private static CombinedIrcCommand ParseCommand(string rawCommand)
-    {
-        throw new NotImplementedException();
     }
 
     private static IIrcCommandParameters? ParseParameters(string rawParameters)
