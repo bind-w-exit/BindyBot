@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BindyTwitchLib.Irc.Parser;
+using Newtonsoft.Json;
 using System.Net.WebSockets;
 using System.Text;
 
