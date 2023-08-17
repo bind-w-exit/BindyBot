@@ -1,8 +1,11 @@
-﻿namespace BindyTwitchLib.Irc.Models.Messages.Contracts;
+﻿using BindyTwitchLib.Irc.Models.CommandParameters.Contracts;
 
-public interface IIrcMessageWithCommandParameters<TIrcCommandParameters>
-    : IIrcMessage
-    where TIrcCommandParameters : IIrcCommandParameters
+namespace BindyTwitchLib.Irc.Models.Messages.Contracts;
+
+public interface IIrcMessageWithCommandParameters<TIrcCommandParameters, TSelf>
+    : IIrcMessage<TSelf>
+    where TIrcCommandParameters : IIrcCommandParameters<TIrcCommandParameters>
+    where TSelf : IIrcMessageWithCommandParameters<TIrcCommandParameters, TSelf>
 {
     /// <summary>
     /// Parameters provide additional data associated with the command.

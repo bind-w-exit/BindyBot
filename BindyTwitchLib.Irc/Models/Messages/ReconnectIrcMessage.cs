@@ -2,12 +2,9 @@
 
 namespace BindyTwitchLib.Irc.Models.Messages;
 
-public class ReconnectIrcMessage : IIrcMessage
+public class ReconnectIrcMessage : IrcMessage<ReconnectIrcMessage>
 {
-    public IrcSource Prefix { get; set; }
-
-    public ReconnectIrcMessage(IrcSource prefix)
+    public ReconnectIrcMessage(IrcSource prefix) : base(prefix)
     {
-        Prefix = prefix;
     }
 }

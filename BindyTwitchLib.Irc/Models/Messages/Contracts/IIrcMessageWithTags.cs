@@ -2,9 +2,10 @@
 
 namespace BindyTwitchLib.Irc.Models.Messages.Contracts;
 
-public interface IIrcMessageWithTags<TIrcTags>
-    : IIrcMessage
+public interface IIrcMessageWithTags<TIrcTags, TSelf>
+    : IIrcMessage<TSelf>
     where TIrcTags : IIrcTags<TIrcTags>
+    where TSelf : IIrcMessageWithTags<TIrcTags, TSelf>
 {
     /// <summary>
     /// Tags are optional key-value pairs that provide additional metadata about the message.
