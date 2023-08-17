@@ -6,7 +6,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#privmsg-tags
 // Prototype: @badge-info=<badge-info>;badges=<badges>;bits=<bits>client-nonce=<nonce>;color=<color>;display-name=<display-name>;emotes=<emotes>;first-msg=<first-msg>;flags=<flags>;id=<msg-id>;mod=<mod>;room-id=<room-id>;subscriber=<subscriber>;tmi-sent-ts=<timestamp>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>;reply-parent-msg-id=<reply-parent-msg-id>;reply-parent-user-id=<reply-parent-user-id>;reply-parent-user-login=<reply-parent-user-login>;reply-parent-display-name=<reply-parent-display-name>;reply-parent-msg-body=<reply-parent-msg-body>;vip=<vip>
-public class PrivMsgTags : IrcTags<PrivMsgTags>
+public partial class PrivMsgTags
 {
     /// <summary>
     /// Contains metadata related to the chat badges in the badges tag.
@@ -126,7 +126,10 @@ public class PrivMsgTags : IrcTags<PrivMsgTags>
     /// </summary>
     [IrcTag("vip")]
     public bool Vip { get; set; }
+}
 
+public partial class PrivMsgTags : IrcTags<PrivMsgTags>
+{
     protected override PrivMsgTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         throw new NotImplementedException();

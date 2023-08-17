@@ -5,7 +5,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#roomstate-tags
 // Prototype: @emote-only=<emote-only>;followers-only=<followers-only>;r9k=<r9k>;rituals=<rituals>;room-id=<room-id>;slow=<slow>;subs-only=<subs-only>
-public class RoomStateTags : IrcTags<RoomStateTags>
+public partial class RoomStateTags
 {
     /// <summary>
     /// A Boolean value that determines whether the chat room allows only messages with emotes.
@@ -44,7 +44,10 @@ public class RoomStateTags : IrcTags<RoomStateTags>
     /// </summary>
     [IrcTag("subs-only")]
     public bool SubsOnly { get; set; }
+}
 
+public partial class RoomStateTags : IrcTags<RoomStateTags>
+{
     protected override RoomStateTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         throw new NotImplementedException();

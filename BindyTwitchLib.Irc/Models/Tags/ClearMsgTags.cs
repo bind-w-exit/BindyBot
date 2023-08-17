@@ -5,7 +5,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#clearmsg-tags
 // Prototype: @login=<login>;room-id=<room-id>;target-msg-id=<target-msg-id>;tmi-sent-ts=<timestamp>
-public class ClearMsgTags : IrcTags<ClearMsgTags>
+public partial class ClearMsgTags
 {
     /// <summary>
     /// The name of the user who sent the message.
@@ -30,7 +30,10 @@ public class ClearMsgTags : IrcTags<ClearMsgTags>
     /// </summary>
     [IrcTag("tmi-sent-ts")]
     public long TmiSentTs { get; set; }
+}
 
+public partial class ClearMsgTags : IrcTags<ClearMsgTags>
+{
     protected override ClearMsgTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         ClearMsgTags clearMsgTags = new();

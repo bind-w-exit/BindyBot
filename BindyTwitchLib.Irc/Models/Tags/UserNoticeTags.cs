@@ -7,7 +7,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#usernotice-tags
 // Prototype: @badge-info=<badge-info>;badges=<badges>;color=<color>;display-name=<display-name>;emotes=<emotes>;id=<id-of-msg>;login=<user>;mod=<mod>;msg-id=<msg-id>;room-id=<room-id>;subscriber=<subscriber>;system-msg=<system-msg>;tmi-sent-ts=<timestamp>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
-public class UserNoticeTags : IrcTags<UserNoticeTags>
+public partial class UserNoticeTags
 {
     /// <summary>
     /// Contains metadata related to the chat badges in the badges tag.
@@ -232,7 +232,10 @@ public class UserNoticeTags : IrcTags<UserNoticeTags>
     public int? MsgParamGiftMonths { get; set; }
 
     #endregion Only subscription- and raid-related notices include the following tags:
+}
 
+public partial class UserNoticeTags : IrcTags<UserNoticeTags>
+{
     protected override UserNoticeTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         throw new NotImplementedException();

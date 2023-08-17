@@ -5,7 +5,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#clearchat-tags
 // Prototype: @ban-duration=<duration>;room-id=<room-id>;target-user-id=<user-id>;tmi-sent-ts=<timestamp>
-public class ClearChatTags : IrcTags<ClearChatTags>
+public partial class ClearChatTags
 {
     /// <summary>
     /// Optional. The message includes this tag if the user was put in a timeout. The tag contains the duration of the timeout, in seconds.
@@ -30,7 +30,10 @@ public class ClearChatTags : IrcTags<ClearChatTags>
     /// </summary>
     [IrcTag("tmi-sent-ts")]
     public long TmiSentTs { get; set; }
+}
 
+public partial class ClearChatTags : IrcTags<ClearChatTags>
+{
     protected override ClearChatTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         ClearChatTags clearChatTags = new();

@@ -6,7 +6,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#whisper-tags
 // Prototype: @badges=<badges>;color=<color>;display-name=<display-name>;emotes=<emotes>;message-id=<msg-id>;thread-id=<thread-id>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
-public class WhisperTags : IrcTags<WhisperTags>
+public partial class WhisperTags : IrcTags<WhisperTags>
 {
     /// <summary>
     /// Comma-separated list of chat badges in the form, badge/version. For example, admin/1.
@@ -59,7 +59,10 @@ public class WhisperTags : IrcTags<WhisperTags>
 
     [IrcTag("user-type")]
     public UserType UserType { get; set; }
+}
 
+public partial class WhisperTags : IrcTags<WhisperTags>
+{
     protected override WhisperTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         throw new NotImplementedException();

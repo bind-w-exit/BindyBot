@@ -6,7 +6,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#notice-tags
 // Prototype: @msg-id=<msg-id>;target-user-id=<user-id>
-public class NoticeTags : IrcTags<NoticeTags>
+public partial class NoticeTags
 {
     /// <summary>
     /// An ID that you can use to programmatically determine the action’s outcome. For a list of possible IDs, see NOTICE Message IDs.
@@ -19,7 +19,10 @@ public class NoticeTags : IrcTags<NoticeTags>
     /// </summary>
     [IrcTag("target-user-id")]
     public long TargetUserId { get; set; }
+}
 
+public partial class NoticeTags : IrcTags<NoticeTags>
+{
     protected override NoticeTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         throw new NotImplementedException();

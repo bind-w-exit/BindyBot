@@ -6,7 +6,7 @@ namespace BindyTwitchLib.Irc.Models.Tags;
 
 // https://dev.twitch.tv/docs/irc/tags/#globaluserstate-tags
 // Prototype: @badge-info=<badge-info>;badges=<badges>;color=<color>;display-name=<display-name>;emote-sets=<emote-sets>;turbo=<turbo>;user-id=<user-id>;user-type=<user-type>
-public class GlobalUserStateTags : IrcTags<GlobalUserStateTags>
+public partial class GlobalUserStateTags
 {
     /// <summary>
     /// Contains metadata related to the chat badges in the badges tag.
@@ -51,7 +51,10 @@ public class GlobalUserStateTags : IrcTags<GlobalUserStateTags>
 
     [IrcTag("user-type")]
     public UserType UserType { get; set; }
+}
 
+public partial class GlobalUserStateTags : IrcTags<GlobalUserStateTags>
+{
     protected override GlobalUserStateTags ParseFromDictionary(Dictionary<string, string> tags)
     {
         GlobalUserStateTags globalUserStateTags = new();

@@ -1,9 +1,26 @@
-﻿namespace BindyTwitchLib.Irc.Models.Tags.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace BindyTwitchLib.Irc.Models.Tags.Contracts;
 
 public abstract class IrcTags<TSelf> : IIrcTags<TSelf>
-    where TSelf : IrcTags<TSelf>
+    where TSelf : IrcTags<TSelf>, new()
 {
-    public TSelf Parse(string s)
+    public static TSelf Parse(string s, IFormatProvider? provider)
+    {
+        var tags = GetTags(s);
+        var tagInstance = new TSelf();
+        tagInstance.ParseFromDictionary(tags);
+        return tagInstance;
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out TSelf result)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected abstract TSelf ParseFromDictionary(Dictionary<string, string> tags);
+
+    private static Dictionary<string, string> GetTags(string s)
     {
         if (string.IsNullOrEmpty(s))
             throw new ArgumentNullException(nameof(s));
@@ -35,8 +52,6 @@ public abstract class IrcTags<TSelf> : IIrcTags<TSelf>
                 throw new ArgumentException($"Invalid tag format. Tag name: {key}");
         }
 
-        return ParseFromDictionary(tags);
+        return tags;
     }
-
-    protected abstract TSelf ParseFromDictionary(Dictionary<string, string> tags);
 }
